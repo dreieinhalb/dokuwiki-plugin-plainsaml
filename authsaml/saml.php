@@ -54,7 +54,8 @@ class saml_handler {
         // Force redirection to the IdP if we chose authsaml as authtype or if we configured as true the 'force_saml_login'
         $force_saml_login = $auth_saml_active || $plugin_conf['force_saml_login'];
 
-        $this->saml_user_file = $conf['savedir'] . '/users.saml.php';
+        # Use DOKU_CONF analogue to authplain plugin
+        $this->saml_user_file = DOKU_CONF.'users.saml.php';
     }
 
     /**
