@@ -176,11 +176,8 @@ class saml_handler {
             $cookie    = base64_encode($username).'|'.((int) false).'|'.base64_encode($pass);
             $cookieDir = empty($conf['cookiedir']) ? DOKU_REL : $conf['cookiedir'];
             $time      = $sticky ? (time() + 60 * 60 * 24 * 365) : 0; //one year
-            if(version_compare(PHP_VERSION, '5.2.0', '>')) {
-                setcookie(DOKU_COOKIE, $cookie, $time, $cookieDir, '', ($conf['securecookie'] && is_ssl()), true);
-            } else {
-                setcookie(DOKU_COOKIE, $cookie, $time, $cookieDir, '', ($conf['securecookie'] && is_ssl()));
-            }
+            setcookie(DOKU_COOKIE, $cookie, $time, $cookieDir, '', ($conf['securecookie'] && is_ssl()), true);
+
             // set session
             $_SESSION[DOKU_COOKIE]['auth']['user'] = $username;
             $_SESSION[DOKU_COOKIE]['auth']['pass'] = sha1(auth_pwgen());
