@@ -17,11 +17,10 @@ if (! defined('DOKU_INC'))
     die();
 
 
-class auth_plugin_authsaml extends DokuWiki_Auth_Plugin
-{
+class auth_plugin_authsaml extends DokuWiki_Auth_Plugin {
     /**
      * simplesamlphp auth instance
-     * 
+     *
      * @var object
      */
     protected $saml;
@@ -30,8 +29,7 @@ class auth_plugin_authsaml extends DokuWiki_Auth_Plugin
     /**
      * Constructor.
      */
-    public function __construct()
-    {
+    public function __construct() {
         global $conf;
         parent::__construct();
 
@@ -49,12 +47,11 @@ class auth_plugin_authsaml extends DokuWiki_Auth_Plugin
 
     /**
      * Get user data
-     * 
+     *
      * @return string|null
      */
 
-    public function getUserData($user, $requireGroups = true)
-    {
+    public function getUserData($user, $requireGroups = true) {
         return $this->saml->getUserData($user);
     }
 
@@ -68,8 +65,7 @@ class auth_plugin_authsaml extends DokuWiki_Auth_Plugin
      * {@inheritdoc}
      * @see DokuWiki_Auth_Plugin::trustExternal()
      */
-    public function trustExternal($user, $pass, $sticky = false)
-    {
+    public function trustExternal($user, $pass, $sticky = false) {
         $this->saml->get_ssp_instance();
 
         if ($this->saml->ssp->isAuthenticated()) {
@@ -80,5 +76,4 @@ class auth_plugin_authsaml extends DokuWiki_Auth_Plugin
 
         return false;
     }
-
 }

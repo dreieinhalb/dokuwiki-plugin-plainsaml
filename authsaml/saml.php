@@ -33,8 +33,7 @@ class saml_handler {
     protected $attributes = array();
 
 
-    public function __construct($plugin_conf)
-    {
+    public function __construct($plugin_conf) {
         global $auth, $conf;
 
         $this->defaultgroup = $conf['defaultgroup'];
@@ -59,10 +58,9 @@ class saml_handler {
     }
 
     /**
-	 *  Get a simplesamlphp auth instance (initiate it when it does not exist)
+     *  Get a simplesamlphp auth instance (initiate it when it does not exist)
      */
-    public function get_ssp_instance()
-    {
+    public function get_ssp_instance() {
         if ($this->ssp == null) {
             include_once($this->simplesaml_path.'/lib/_autoload.php');
             $this->ssp = new SimpleSAML_Auth_Simple($this->simplesaml_authsource);
@@ -72,15 +70,14 @@ class saml_handler {
 
     /**
      * Get user data
-     * 
+     *
      * @return string|null
      */
     public function getUserData($user) {
         if ($this->use_internal_user_store) {
             global $auth;
             return $auth->getUserData($user);
-        }
-        else {
+        } else {
             return $this->getFILEUserData($user);
         }
     }
@@ -95,8 +92,7 @@ class saml_handler {
         return false;
     }
 
-    public function slo()
-    {
+    public function slo() {
         if ($this->ssp->isAuthenticated()) {
             $this->ssp->logout();
         }
@@ -105,8 +101,7 @@ class saml_handler {
         }
     }
 
-    public function getUsername()
-    {
+    public function getUsername() {
         $attributes = $this->ssp->getAttributes();
         return $attributes[$this->simplesaml_uid][0];
     }
@@ -114,11 +109,10 @@ class saml_handler {
 
     /**
      * Get user data from the SAML assertion
-     * 
+     *
      * @return array|false
      */
-    public function getSAMLUserData()
-    {
+    public function getSAMLUserData() {
         $this->attributes = $this->ssp->getAttributes();
 
         if (!empty($this->attributes)) {
@@ -134,7 +128,7 @@ class saml_handler {
               $mail = $this->attributes[$this->simplesaml_mail][0];
             }
 
-            if (!array_key_exists($this->simplesaml_grps, $this->attributes) || 
+            if (!array_key_exists($this->simplesaml_grps, $this->attributes) ||
               empty($this->attributes[$this->simplesaml_grps])) {
                 $grps = array();
             } else {
@@ -152,17 +146,15 @@ class saml_handler {
 
     /**
      * Get user data from the saml store user file
-     * 
+     *
      * @return array|false
      */
-    public function getFILEUserData($user)
-    {
+    public function getFILEUserData($user) {
         if($this->users === null) $this->_loadUserData();
         return isset($this->users[$user]) ? $this->users[$user] : false;
     }
 
-	function login($username)
-    {
+    function login($username) {
         global $conf, $USERINFO;
 
         $ssp = $this->get_ssp_instance();
@@ -195,12 +187,12 @@ class saml_handler {
             $_SESSION[DOKU_COOKIE]['auth']['info'] = $USERINFO;
             $_SESSION[DOKU_COOKIE]['auth']['time'] = time();
         }
-	}
+    }
 
-	function register_user($username) {
-		global $auth;
-		$user = $username;
-		$pass = auth_pwgen();
+    function register_user($username) {
+        global $auth;
+        $user = $username;
+        $pass = auth_pwgen();
 
         $userData = $this->getSAMLUserData();
 
@@ -210,55 +202,51 @@ class saml_handler {
                 if (empty($userData['grps'])) {
                     $userData['grps'] = array($this->defaultgroup);
                 }
-        		return $auth->createUser($user, $pass, $userData['name'], $userData['mail'], $userData['grps']);
-            }
-            else {
+                return $auth->createUser($user, $pass, $userData['name'], $userData['mail'], $userData['grps']);
+            } else {
                 return false;
             }
-        }
-        else {
+        } else {
             return $this->_saveUserData($username, $userData);
         }
-	}
+    }
 
-	function update_user($username) {
-		global $auth, $conf;
+    function update_user($username) {
+        global $auth, $conf;
 
-		$changes = array();
+        $changes = array();
         $userData = $this->getSAMLUserData();
 
-		if ($auth->canDo('modName')) {
-    		if(!empty($userData['name'])) {
-				$changes['name'] = $userData['name'];
-			}
-		}
-		if ($auth->canDo('modMail')) {
-			if(!empty($userData['mail'])) {
-				$changes['mail'] = $userData['mail'];
-			}
+        if ($auth->canDo('modName')) {
+            if(!empty($userData['name'])) {
+                $changes['name'] = $userData['name'];
+            }
+        }
+        if ($auth->canDo('modMail')) {
+            if(!empty($userData['mail'])) {
+                $changes['mail'] = $userData['mail'];
+            }
         }
         if ($auth->canDo('modGroups')) {
-			if(!empty($userData['grps'])) {
-				$changes['grps'] = $userData['grps'];
-			}
+            if(!empty($userData['grps'])) {
+                $changes['grps'] = $userData['grps'];
+            }
         }
 
-		if (!empty($changes)) {
+        if (!empty($changes)) {
             if ($this->use_internal_user_store) {
                 $auth->modifyUser($username, $changes);
-            }
-            else {
+            } else {
                 $this->modifyUser($username, $changes);
             }
-		}
-	}
+        }
+    }
 
     function delete_user($users) {
         if ($this->use_internal_user_store) {
             global $auth;
-    		return $auth->deleteUser($users);
-        }
-        else {
+            return $auth->deleteUser($users);
+        } else {
             return $this->deleteUsers($users);
         }
     }
@@ -272,12 +260,12 @@ class saml_handler {
      */
     function _loadUserData() {
         global $conf;
-     
+
         $this->users = array();
-     
+
         if(!@file_exists($this->saml_user_file))
             return;
-     
+
         $lines = file($this->saml_user_file);
         foreach($lines as $line){
             $line = preg_replace('/#.*$/','',$line); //ignore comments
@@ -389,10 +377,4 @@ class saml_handler {
         $this->users[$newuser] = $userinfo;
         return true;
     }
-
-
-
 }
-
-
-
