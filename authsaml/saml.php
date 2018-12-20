@@ -355,9 +355,7 @@ class saml_handler {
             $userinfo[$field] = $value;
         }
 
-        $groups   = array_map('urlencode', $groups);
-        $groups   = join(',', $userinfo['grps']);
-
+        $groups   = join(',', array_map('urlencode', $userinfo['grps']));
         $userline = join(':', array($newuser, $userinfo['name'], $userinfo['mail'], $groups))."\n";
 
         if(!$this->deleteUsers(array($username))) {
