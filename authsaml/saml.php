@@ -167,6 +167,7 @@ class saml_handler {
             $_SERVER['REMOTE_USER'] = $username;
 
             $userData = $this->getUserData($username);
+            $pass = $userData['pass'];
 
             $USERINFO['name'] = $userData['name'];
             $USERINFO['mail'] = $userData['mail'];
@@ -180,7 +181,7 @@ class saml_handler {
 
             // set session
             $_SESSION[DOKU_COOKIE]['auth']['user'] = $username;
-            $_SESSION[DOKU_COOKIE]['auth']['pass'] = sha1(auth_pwgen());
+            $_SESSION[DOKU_COOKIE]['auth']['pass'] = sha1($pass);
             $_SESSION[DOKU_COOKIE]['auth']['buid'] = auth_browseruid();
             $_SESSION[DOKU_COOKIE]['auth']['info'] = $USERINFO;
             $_SESSION[DOKU_COOKIE]['auth']['time'] = time();
@@ -205,7 +206,7 @@ class saml_handler {
                 return false;
             }
         } else {
-            return $this->_saveUserData($username, $userData);
+            return $this->_saveUserData($username, $pass, $userData);
         }
     }
 
@@ -270,11 +271,12 @@ class saml_handler {
             $line = trim($line);
             if(empty($line)) continue;
 
-            $row = explode(":",$line,5);
-            $groups = array_map('urldecode', array_values(array_filter(explode(",",$row[3]))));
+            $row = explode(":",$line,6);
+            $groups = array_map('urldecode', array_values(array_filter(explode(",",$row[4]))));
 
-            $this->users[$row[0]]['name'] = urldecode($row[1]);
-            $this->users[$row[0]]['mail'] = $row[2];
+            $this->users[$row[0]]['pass'] = $row[1];
+            $this->users[$row[0]]['name'] = urldecode($row[2]);
+            $this->users[$row[0]]['mail'] = $row[3];
             $this->users[$row[0]]['grps'] = $groups;
         }
     }
@@ -286,7 +288,7 @@ class saml_handler {
      *
      * @author  Lukas Slansky <lukas.slansky@upce.cz>
      */
-    function _saveUserData($username, $userData) {
+    function _saveUserData($username, $pass, $userData) {
         global $conf;
 
         $pattern = '/^' . $username . ':/';
@@ -300,8 +302,10 @@ class saml_handler {
             $userData['grps'] = array();
         }
 
+        $pass = auth_cryptPassword($pass);
         $groups = join(',',array_map('urlencode',$userData['grps']));
-        $userline = join(':',array($username, $userData['name'], $userData['mail'], $groups))."\n";
+        $userline = join(':',array($username, $pass, $userData['name'], $userData['mail'], $groups))."\n";
+
         // Save new line into users file
         if (!io_saveFile($this->saml_user_file, $userline, true)) {
           msg('Error saving user data (2)', -1);
@@ -356,7 +360,7 @@ class saml_handler {
         }
 
         $groups   = join(',', array_map('urlencode', $userinfo['grps']));
-        $userline = join(':', array($newuser, $userinfo['name'], $userinfo['mail'], $groups))."\n";
+        $userline = join(':', array($newuser, $userinfo['pass'], $userinfo['name'], $userinfo['mail'], $groups))."\n";
 
         if(!$this->deleteUsers(array($username))) {
             msg('Unable to modify user data. Please inform the Wiki-Admin', -1);
