@@ -167,14 +167,16 @@ class saml_handler {
             $_SERVER['REMOTE_USER'] = $username;
 
             $userData = $this->getUserData($username);
-            $pass = $userData['pass'];
 
             $USERINFO['name'] = $userData['name'];
             $USERINFO['mail'] = $userData['mail'];
             $USERINFO['grps'] = $userData['grps'];
 
             // set cookie
-            $cookie    = base64_encode($username).'|'.((int) false).'|'.base64_encode($pass);
+            $sticky = false;
+            $secret = auth_cookiesalt(!$sticky, true); //bind non-sticky to session
+            $pass = auth_encrypt($userData['pass'], $secret);
+            $cookie    = base64_encode($username).'|'.((int) $sticky).'|'.base64_encode($pass);
             $cookieDir = empty($conf['cookiedir']) ? DOKU_REL : $conf['cookiedir'];
             $time      = $sticky ? (time() + 60 * 60 * 24 * 365) : 0; //one year
             setcookie(DOKU_COOKIE, $cookie, $time, $cookieDir, '', ($conf['securecookie'] && is_ssl()), true);
