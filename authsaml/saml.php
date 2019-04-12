@@ -25,7 +25,6 @@ class saml_handler {
 
     protected $force_saml_login;
 
-    protected $use_internal_user_store;
     protected $saml_user_file;
     protected $users;
 
@@ -46,10 +45,6 @@ class saml_handler {
         $this->simplesaml_grps = $plugin_conf['simplesaml_grps'];
 
         $auth_saml_active = isset($conf['authtype']) && $conf['authtype'] == 'authsaml';
-
-        // Store users in files if we chose authsaml as authtype (due we cant use internal store) or if
-        // other auth is active and the 'use_internal_user_store' param in the plugin configuration file is false
-        $this->use_internal_user_store = !$auth_saml_active && $plugin_conf['use_internal_user_store'];
 
         // Force redirection to the IdP if we chose authsaml as authtype or if we configured as true the 'force_saml_login'
         $force_saml_login = $auth_saml_active || $plugin_conf['force_saml_login'];
@@ -75,12 +70,7 @@ class saml_handler {
      * @return string|null
      */
     public function getUserData($user) {
-        if ($this->use_internal_user_store) {
-            global $auth;
-            return $auth->getUserData($user);
-        } else {
-            return $this->getFILEUserData($user);
-        }
+        return $this->getFILEUserData($user);
     }
 
     public function checkPass($user) {
@@ -96,9 +86,6 @@ class saml_handler {
     public function slo() {
         if ($this->ssp->isAuthenticated()) {
             $this->ssp->logout();
-        }
-        if ($this->use_internal_user_store) {
-            auth_logoff();
         }
     }
 
@@ -197,18 +184,7 @@ class saml_handler {
 
         $userData = $this->getSAMLUserData();
 
-        if ($this->use_internal_user_store) {
-            global $auth;
-            if ($auth->canDo('addUser')) {
-                if (empty($userData['grps'])) {
-                    $userData['grps'] = array($this->defaultgroup);
-                }
-                return $auth->createUser($user, $pass, $userData['name'], $userData['mail'], $userData['grps']);
-            } else {
-                return false;
-            }
-        } else {
-            return $this->_saveUserData($username, $pass, $userData);
+        return $this->_saveUserData($username, $pass, $userData);
         }
     }
 
@@ -235,20 +211,13 @@ class saml_handler {
         }
 
         if (!empty($changes)) {
-            if ($this->use_internal_user_store) {
-                $auth->modifyUser($username, $changes);
-            } else {
-                $this->modifyUser($username, $changes);
+            $this->modifyUser($username, $changes);
             }
         }
     }
 
     function delete_user($users) {
-        if ($this->use_internal_user_store) {
-            global $auth;
-            return $auth->deleteUser($users);
-        } else {
-            return $this->deleteUsers($users);
+        return $this->deleteUsers($users);
         }
     }
 

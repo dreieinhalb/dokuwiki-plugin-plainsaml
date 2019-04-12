@@ -37,10 +37,6 @@ $conf = array(
      // For example  'eduPersonAffiliation'.
      'simplesaml_grps' => "eduPersonAffiliation",
 
-     // Manage users in a separate file.
-     // If the authtype is set to authsaml, then the users will be always stored in a separate file
-     'use_internal_user_store' => true,
-
     /*
      * action plugin (action.php)
      */
