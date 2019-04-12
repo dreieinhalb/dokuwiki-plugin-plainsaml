@@ -185,7 +185,6 @@ class saml_handler {
         $userData = $this->getSAMLUserData();
 
         return $this->_saveUserData($username, $pass, $userData);
-        }
     }
 
     function update_user($username) {
@@ -217,7 +216,6 @@ class saml_handler {
 
     function delete_user($users) {
         return $this->deleteUsers($users);
-        }
     }
 
     /**
