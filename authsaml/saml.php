@@ -212,7 +212,6 @@ class saml_handler {
 
         if (!empty($changes)) {
             $this->modifyUser($username, $changes);
-            }
         }
     }
 
