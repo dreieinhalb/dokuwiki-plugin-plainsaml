@@ -102,7 +102,7 @@ class action_plugin_authsaml extends DokuWiki_Action_Plugin {
      * Insert link to SAML SP
      */
     function handle_login_form(&$event, $param) {
-        global $auth;
+        global $auth, $conf;
 
         $this->saml->get_ssp_instance();
 
