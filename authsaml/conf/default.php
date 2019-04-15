@@ -44,4 +44,7 @@ $conf = array(
      // When enabled, this will hide the normal login form and redirect directly to the IdP.
      // If the authtype is set to authsaml,  then the redirection will be always done
      'force_saml_login' => false,
+
+     // path to button image
+     'button_image_path' => "lib/plugins/authsaml/images/button.gif",
 );

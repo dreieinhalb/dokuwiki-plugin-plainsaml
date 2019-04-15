@@ -94,8 +94,14 @@ class action_plugin_authsaml extends DokuWiki_Action_Plugin {
 
         $this->saml->get_ssp_instance();
 
+        // use custom path for button image (or fall back to default)
+        $button_image_path = 'lib/plugins/authsaml/images/button.gif';
+        if (!empty($this->getConf('button_image_path')) && is_file($this->getConf('button_image_path'))) {
+            $button_image_path = $this->getConf('button_image_path');
+        }
+
         $fieldset  = '<fieldset height="400px" style="margin-bottom:20px;"><legend padding-top:-5px">'.$this->getLang('saml_connect').'</legend>';
-        $fieldset .= '<center><a href="'.$this->saml->ssp->getLoginURL().'"><img src="lib/plugins/authsaml/logo.gif" alt="uniquid - saml"></a><br>';
+        $fieldset .= '<center><a href="'.$this->saml->ssp->getLoginURL().'"><img src="'.$button_image_path.'" alt="'.$this->getLang('saml_connect').'"></a><br>';
         $fieldset .= $this->getLang('login_link').'</center></fieldset>';
         $pos = $event->data->findElementByAttribute('type', 'submit');
         $event->data->insertElement($pos-4, $fieldset);
