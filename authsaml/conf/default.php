@@ -38,7 +38,7 @@ $conf = array(
      'simplesaml_grps' => "eduPersonAffiliation",
 
      // URL to redirect after successful single logout
-     // 'simplesaml_logout_url' => "",
+     //'simplesaml_logout_url' => "",
 
     /*
      * action plugin (action.php)
@@ -49,5 +49,5 @@ $conf = array(
      'force_saml_login' => false,
 
      // path to button image
-     'button_image_path' => "lib/plugins/authsaml/images/button.gif",
+     //'button_image_path' => "",
 );
