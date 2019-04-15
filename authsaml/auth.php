@@ -76,4 +76,10 @@ class auth_plugin_authsaml extends DokuWiki_Auth_Plugin {
 
         return false;
     }
+
+    public function logOff() {
+        if ($this->saml->ssp->isAuthenticated()) {
+            $this->saml->slo();
+        }
+    }
 }

@@ -96,11 +96,6 @@ class action_plugin_authsaml extends DokuWiki_Action_Plugin {
                 $this->saml->login($username);
             }
         }
-        if ('logout' == $ACT) {
-            if ($this->saml->ssp->isAuthenticated()) {
-                $this->saml->slo();
-            }
-        }
     }
 
     /**
