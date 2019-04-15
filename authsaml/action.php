@@ -44,6 +44,23 @@ class action_plugin_authsaml extends DokuWiki_Action_Plugin {
 
         $controller->register_hook('HTML_LOGINFORM_OUTPUT', 'BEFORE', $this, 'handle_login_form');
         $controller->register_hook('ACTION_ACT_PREPROCESS', 'BEFORE', $this, 'handle_login');
+        $controller->register_hook('AUTH_ACL_CHECK', 'AFTER', $this, 'handle_access_denied');
+    }
+
+    /**
+     * Instead of showing the login page when access is denied, redirect to the IdP if force_saml_login is 'true'
+     */
+    function handle_access_denied(&$event, $param) {
+        global $ACT;
+        global $INFO;
+
+        $this->saml->get_ssp_instance();
+
+        if ($ACT == 'denied') {
+            if ($this->getConf('force_saml_login')) {
+                $this->saml->ssp->requireAuth();
+            }
+        }
     }
 
     /**
