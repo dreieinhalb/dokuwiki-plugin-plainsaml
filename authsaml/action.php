@@ -106,6 +106,11 @@ class action_plugin_authsaml extends DokuWiki_Action_Plugin {
 
         $this->saml->get_ssp_instance();
 
+        // remove the local login form for exclusive saml login
+        if (isset($conf['authtype']) && $conf['authtype'] == 'authsaml') {
+            $event->data->_content = array();
+        }
+
         // use custom path for button image (or fall back to default)
         $button_image_path = 'lib/plugins/authsaml/images/button.gif';
         if (!empty($this->getConf('button_image_path')) && is_file($this->getConf('button_image_path'))) {
