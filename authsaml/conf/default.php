@@ -37,6 +37,9 @@ $conf = array(
      // For example  'eduPersonAffiliation'.
      'simplesaml_grps' => "eduPersonAffiliation",
 
+     // URL to redirect after successful single logout
+     // 'simplesaml_logout_url' => "",
+
     /*
      * action plugin (action.php)
      */

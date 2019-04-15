@@ -21,6 +21,7 @@ class saml_handler {
     protected $simplesaml_mail;
     protected $simplesaml_name;
     protected $simplesaml_grps;
+    protected $simplesaml_logout_url;
     protected $defaultgroup;
 
     protected $force_saml_login;
@@ -43,6 +44,7 @@ class saml_handler {
         $this->simplesaml_mail = $plugin_conf['simplesaml_mail'];
         $this->simplesaml_name = $plugin_conf['simplesaml_name'];
         $this->simplesaml_grps = $plugin_conf['simplesaml_grps'];
+        $this->simplesaml_logout_url = $plugin_conf['simplesaml_logout_url'];
 
         $auth_saml_active = isset($conf['authtype']) && $conf['authtype'] == 'authsaml';
 
@@ -85,7 +87,12 @@ class saml_handler {
 
     public function slo() {
         if ($this->ssp->isAuthenticated()) {
-            $this->ssp->logout();
+            # redirect to logout URL after successful single logout
+            if (empty($this->simplesaml_logout_url)) {
+                $this->ssp->logout();
+            } else {
+                $this->ssp->logout($this->simplesaml_logout_url);
+            }
         }
     }
 
