@@ -51,6 +51,7 @@ class action_plugin_authsaml extends DokuWiki_Action_Plugin {
      * Instead of showing the login page when access is denied, redirect to the IdP if force_saml_login is 'true'
      */
     function handle_access_denied(&$event, $param) {
+        $this->saml->debug_saml("Called function 'handle_access_denied(&$event, $param)'", __LINE__, __FILE__);
         global $ACT;
         global $INFO;
 
@@ -67,6 +68,7 @@ class action_plugin_authsaml extends DokuWiki_Action_Plugin {
      * Redirect Login Handler. Redirect to the IdP if force_saml_login is True
      */
     public function handle_login($event, $param) {
+        $this->saml->debug_saml("Called function 'handle_login($event, $param)'", __LINE__, __FILE__);
         global $ACT, $auth;
 
         $this->saml->get_ssp_instance();
@@ -102,6 +104,7 @@ class action_plugin_authsaml extends DokuWiki_Action_Plugin {
      * Insert link to SAML SP
      */
     function handle_login_form(&$event, $param) {
+        $this->saml->debug_saml("Called function 'handle_login_form(&$event, $param)'", __LINE__, __FILE__);
         global $auth, $conf;
 
         $this->saml->get_ssp_instance();

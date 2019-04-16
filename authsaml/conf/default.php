@@ -14,6 +14,9 @@
  */
 $conf = array(
 
+    // enable for debugging output
+    //'debug' => true,
+
     /*
      * auth plugin (auth.php)
      */

@@ -24,6 +24,8 @@ class saml_handler {
     protected $simplesaml_logout_url;
     protected $defaultgroup;
 
+    protected $debug_saml;
+
     protected $force_saml_login;
 
     protected $saml_user_file;
@@ -37,6 +39,8 @@ class saml_handler {
         global $auth, $conf;
 
         $this->defaultgroup = $conf['defaultgroup'];
+
+        $this->debug_saml = $plugin_conf['debug'];
 
         $this->simplesaml_path = $plugin_conf['simplesaml_path'];
         $this->simplesaml_authsource = $plugin_conf['simplesaml_authsource'];
@@ -72,10 +76,12 @@ class saml_handler {
      * @return string|null
      */
     public function getUserData($user) {
+        $this->debug_saml("Called function 'getUserData($user)'", __LINE__, __FILE__);
         return $this->getFILEUserData($user);
     }
 
     public function checkPass($user) {
+        $this->debug_saml("Called function 'checkPass($user)'", __LINE__, __FILE__);
         $ssp = $this->get_ssp_instance();
         if ($ssp->isAuthenticated()) {
             if ($user == $this->getUsername()) {
@@ -86,6 +92,7 @@ class saml_handler {
     }
 
     public function slo() {
+        $this->debug_saml("Called function 'slo()'", __LINE__, __FILE__);
         if ($this->ssp->isAuthenticated()) {
             # redirect to logout URL after successful single logout
             if (empty($this->simplesaml_logout_url)) {
@@ -97,6 +104,7 @@ class saml_handler {
     }
 
     public function getUsername() {
+        $this->debug_saml("Called function 'getUsername()'", __LINE__, __FILE__);
         $attributes = $this->ssp->getAttributes();
         return $attributes[$this->simplesaml_uid][0];
     }
@@ -108,6 +116,7 @@ class saml_handler {
      * @return array|false
      */
     public function getSAMLUserData() {
+        $this->debug_saml("Called function 'getSAMLUserData()'", __LINE__, __FILE__);
         $this->attributes = $this->ssp->getAttributes();
 
         if (!empty($this->attributes)) {
@@ -145,11 +154,13 @@ class saml_handler {
      * @return array|false
      */
     public function getFILEUserData($user) {
+        $this->debug_saml("Called function 'getFILEUserData($user)'", __LINE__, __FILE__);
         if($this->users === null) $this->_loadUserData();
         return isset($this->users[$user]) ? $this->users[$user] : false;
     }
 
     function login($username) {
+        $this->debug_saml("Called function 'login($username)'", __LINE__, __FILE__);
         global $conf, $USERINFO;
 
         $ssp = $this->get_ssp_instance();
@@ -185,6 +196,7 @@ class saml_handler {
     }
 
     function register_user($username) {
+        $this->debug_saml("Called function 'register_user($username)'", __LINE__, __FILE__);
         global $auth;
         $user = $username;
         $pass = auth_pwgen();
@@ -195,6 +207,7 @@ class saml_handler {
     }
 
     function update_user($username) {
+        $this->debug_saml("Called function 'update_user($username)'", __LINE__, __FILE__);
         global $auth, $conf;
 
         $changes = array();
@@ -222,6 +235,7 @@ class saml_handler {
     }
 
     function delete_user($users) {
+        $this->debug_saml("Called function 'delete_user($users)'", __LINE__, __FILE__);
         return $this->deleteUsers($users);
     }
 
@@ -233,6 +247,7 @@ class saml_handler {
      * @author  Lukas Slansky <lukas.slansky@upce.cz>
      */
     function _loadUserData() {
+        $this->debug_saml("Called function '_loadUserData()'", __LINE__, __FILE__);
         global $conf;
 
         $this->users = array();
@@ -264,6 +279,7 @@ class saml_handler {
      * @author  Lukas Slansky <lukas.slansky@upce.cz>
      */
     function _saveUserData($username, $pass, $userData) {
+        $this->debug_saml("Called function '_saveUserData()'", __LINE__, __FILE__);
         global $conf;
 
         $pattern = '/^' . $username . ':/';
@@ -291,6 +307,7 @@ class saml_handler {
     }
 
     public function deleteUsers($users) {
+        $this->debug_saml("Called function '_deleteUsers()'", __LINE__, __FILE__);
 
         if(!is_array($users) || empty($users)) return 0;
 
@@ -318,6 +335,7 @@ class saml_handler {
     }
 
     public function modifyUser($username, $changes) {
+        $this->debug_saml("Called function '_modifyUser()'", __LINE__, __FILE__);
         global $ACT;
 
         // sanity checks, user must already exist and there must be something to change
@@ -351,5 +369,26 @@ class saml_handler {
 
         $this->users[$newuser] = $userinfo;
         return true;
+    }
+
+    /**
+     * Wrapper for error_log to write debug messages only when debug is enabled in config
+     * (adapted from dokuwiki-plugin-authclientcert by Pawel Jasinski <pawel.jasinski@gmail.com>)
+     *
+     * @param string $message
+     * @param int    $line
+     * @param string $file
+     * @return void
+     *
+     * @author Dominik Volkamer <dominik.volkamer@fau.de>
+     */
+
+    public function debug_saml($message, $line, $file) {
+        if(!$this->debug_saml) return;
+        error_log($message." [".$file.":".$line."]");
+    }
+    public function debug_saml_dump($data, $message, $line, $file) {
+        $data_dump = print_r($data, true);
+        $this->debug_saml($message." ".$data_dump, $line, $file);
     }
 }

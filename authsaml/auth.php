@@ -52,11 +52,13 @@ class auth_plugin_authsaml extends DokuWiki_Auth_Plugin {
      */
 
     public function getUserData($user, $requireGroups = true) {
+        $this->saml->debug_saml("Called function 'getUserData($user, $requireGroups)'", __LINE__, __FILE__);
         return $this->saml->getUserData($user);
     }
 
 
     public function checkPass($user, $pass) {
+        $this->saml->debug_saml("Called function 'checkPass($user, $pass)'", __LINE__, __FILE__);
         return $this->saml->checkPass($user);
     }
 
@@ -66,6 +68,7 @@ class auth_plugin_authsaml extends DokuWiki_Auth_Plugin {
      * @see DokuWiki_Auth_Plugin::trustExternal()
      */
     public function trustExternal($user, $pass, $sticky = false) {
+        $this->saml->debug_saml("Called function 'trustExternal($user, $pass, $sticky)'", __LINE__, __FILE__);
         $this->saml->get_ssp_instance();
 
         if ($this->saml->ssp->isAuthenticated()) {
@@ -78,6 +81,7 @@ class auth_plugin_authsaml extends DokuWiki_Auth_Plugin {
     }
 
     public function logOff() {
+        $this->saml->debug_saml("Called function 'logOff()'", __LINE__, __FILE__);
         if ($this->saml->ssp->isAuthenticated()) {
             $this->saml->slo();
         }
