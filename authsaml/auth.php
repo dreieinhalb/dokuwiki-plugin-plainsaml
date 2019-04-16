@@ -73,8 +73,19 @@ class auth_plugin_authsaml extends DokuWiki_Auth_Plugin {
 
         if ($this->saml->ssp->isAuthenticated()) {
             $username = $this->saml->getUsername();
-            $this->saml->login($username);
-            return true;
+
+            if($this->saml->getUserData($username)) {
+                $this->saml->update_user($username);
+                $this->saml->login($username);
+                return true;
+            } else {
+                if($this->saml->register_user($username)) {
+                    $this->saml->login($username);
+                    return true;
+                } else {
+                    return false;
+                }
+            }
         }
 
         return false;
