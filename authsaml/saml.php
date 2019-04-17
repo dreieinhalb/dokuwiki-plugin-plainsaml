@@ -70,16 +70,6 @@ class saml_handler {
         return $this->ssp;
     }
 
-    /**
-     * Get user data
-     *
-     * @return string|null
-     */
-    public function getUserData($user) {
-        $this->debug_saml("Called function 'getUserData($user)'", __LINE__, __FILE__);
-        return $this->getFILEUserData($user);
-    }
-
     public function checkPass($user) {
         $this->debug_saml("Called function 'checkPass($user)'", __LINE__, __FILE__);
         $ssp = $this->get_ssp_instance();
@@ -153,8 +143,8 @@ class saml_handler {
      *
      * @return array|false
      */
-    public function getFILEUserData($user) {
-        $this->debug_saml("Called function 'getFILEUserData($user)'", __LINE__, __FILE__);
+    public function getUserData($user) {
+        $this->debug_saml("Called function 'getUserData($user)'", __LINE__, __FILE__);
         if($this->users === null) $this->_loadUserData();
         return isset($this->users[$user]) ? $this->users[$user] : false;
     }
@@ -339,7 +329,7 @@ class saml_handler {
         global $ACT;
 
         // sanity checks, user must already exist and there must be something to change
-        if(($userinfo = $this->getFILEUserData($username)) === false) return false;
+        if(($userinfo = $this->getUserData($username)) === false) return false;
         if(!is_array($changes) || !count($changes)) return true;
 
         // update userinfo with new data
