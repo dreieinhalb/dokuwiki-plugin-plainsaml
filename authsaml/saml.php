@@ -70,17 +70,6 @@ class saml_handler {
         return $this->ssp;
     }
 
-    public function checkPass($user) {
-        $this->debug_saml("Called function 'checkPass($user)'", __LINE__, __FILE__);
-        $ssp = $this->get_ssp_instance();
-        if ($ssp->isAuthenticated()) {
-            if ($user == $this->getUsername()) {
-                return true;
-            }
-        }
-        return false;
-    }
-
     public function slo() {
         $this->debug_saml("Called function 'slo()'", __LINE__, __FILE__);
         if ($this->ssp->isAuthenticated()) {

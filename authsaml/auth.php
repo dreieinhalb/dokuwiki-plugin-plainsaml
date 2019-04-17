@@ -56,13 +56,6 @@ class auth_plugin_authsaml extends DokuWiki_Auth_Plugin {
         return $this->saml->getUserData($user);
     }
 
-
-    public function checkPass($user, $pass) {
-        $this->saml->debug_saml("Called function 'checkPass($user, $pass)'", __LINE__, __FILE__);
-        return $this->saml->checkPass($user);
-    }
-
-
     /**
      * {@inheritdoc}
      * @see DokuWiki_Auth_Plugin::trustExternal()
