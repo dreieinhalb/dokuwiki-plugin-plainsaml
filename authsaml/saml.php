@@ -145,7 +145,7 @@ class saml_handler {
      */
     public function getUserData($user) {
         $this->debug_saml("Called function 'getUserData($user)'", __LINE__, __FILE__);
-        if($this->users === null) $this->_loadUserData();
+        if(empty($this->users) || empty($this->users[$user])) $this->_loadUserData();
         return isset($this->users[$user]) ? $this->users[$user] : false;
     }
 
