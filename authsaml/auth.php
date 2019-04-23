@@ -17,7 +17,7 @@ if (! defined('DOKU_INC'))
     die();
 
 
-class auth_plugin_authsaml extends DokuWiki_Auth_Plugin {
+class auth_plugin_authsaml extends auth_plugin_authplain {
     /**
      * simplesamlphp auth instance
      *
@@ -32,8 +32,6 @@ class auth_plugin_authsaml extends DokuWiki_Auth_Plugin {
     public function __construct() {
         global $conf;
         parent::__construct();
-
-        // $this->cando['external'] = true;
 
         $this->cando['external'] = true;
         $this->cando['logoff'] = true;
@@ -75,13 +73,11 @@ class auth_plugin_authsaml extends DokuWiki_Auth_Plugin {
                 if($this->saml->register_user($username)) {
                     $this->saml->login($username);
                     return true;
-                } else {
-                    return false;
                 }
             }
         }
 
-        return false;
+        return auth_login($user, $pass, $sticky);
     }
 
     public function logOff() {
