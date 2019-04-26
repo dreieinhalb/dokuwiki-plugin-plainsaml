@@ -1,6 +1,9 @@
 authsaml plugin for dokuwiki
 ============================
 
+**TODO: Update this README (it does not fit anymore)**
+
+
 This plugin works with weatherwax version.
 
 This plugin is a mix of the [ssp](https://www.dokuwiki.org/auth:ssp) and the [simplesamldokuwiki](http://code.google.com/p/simplesamldokuwiki/>) plugin.
