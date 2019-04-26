@@ -59,6 +59,9 @@ class auth_plugin_plainsaml extends auth_plugin_authplain {
 
         $this->saml->debug_saml("Called function 'trustExternal($user,[...])'", __LINE__, __FILE__);
 
+        $session = $_SESSION[DOKU_COOKIE]['auth'];
+        $saml_session = $_SESSION[DOKU_COOKIE]['auth']['saml'];
+
         if((!empty($user) && !empty($pass)) || (!empty($session) && empty($saml_session))) {
             $this->saml->debug_saml("using authplain", __LINE__, __FILE__);
 
