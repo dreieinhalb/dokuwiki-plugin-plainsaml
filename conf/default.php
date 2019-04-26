@@ -1,59 +1,20 @@
 <?php
 /**
- * Default settings for the plainsaml plugin.
+ * Configuration defaults for plainsaml
  *
- * @author  Sixto Martin <sixto.martin.garcia@gmail.com>
- * @author  Andreas Aakre Solberg, UNINETT, http://www.uninett.no
- * @author  François Kooman
- * @author  Thijs Kinkhorst, Universiteit van Tilburg
- * @author  Jorge Hervás <jordihv@gmail.com>, Lukas Slansky <lukas.slansky@upce.cz>
- * @license GPL2 http://www.gnu.org/licenses/gpl.html
- * @link https://github.com/pitbulk/dokuwiki-saml
- *
- * @link https://www.dokuwiki.org/devel:configuration#default_settings Documentation
+ * @author Dominik Volkamer <dominik.volkamer@fau.de> (RRZE)
  */
-$conf = array(
 
-    // enable for debugging output
-    //'debug' => true,
+$conf['debug'] = false;
 
-    /*
-     * auth plugin (auth.php)
-     */
+$conf['simplesaml_path'] = '';
+$conf['simplesaml_authsource'] = '';
+$conf['simplesaml_uid'] = '';
+$conf['simplesaml_mail'] = '';
+$conf['simplesaml_name'] = '';
+$conf['simplesaml_grps'] = '';
+$conf['simplesaml_logout_url'] = '';
 
-     // simpleSAMLphp Path: This refers to the path of the simpleSAMLphp folder. For example: /var/www/simplesamlphp
-     'simplesaml_path' => "/var/www/simplesamlphp",
-
-     // SimpleSAMLphp SP source: Select the SP source you want to connect to moodle. (Sources are at the SP of simpleSAMLphp in config/authsources.php).
-     'simplesaml_authsource' => "default-sp",
-
-     // SAML identify field mapping: It is the SAML attribute that will be mapped to the Dokuwiki username. For example 'uid'.
-     'simplesaml_uid' => "uid",
-
-     // SAML identify field mapping: It is the SAML attribute that will be mapped to the Dokuwiki mail. For example 'mail'.
-     'simplesaml_mail' => "mail",
-
-     // SAML identify field mapping: It is the SAML attribute that will be mapped to the Dokuwiki name. For example 'cn'.
-     'simplesaml_name' => "cn",
-
-     // SAML identify field mapping: It is the SAML attribute that will be mapped to the Dokuwiki groups.
-     // For example  'eduPersonAffiliation'.
-     'simplesaml_grps' => "eduPersonAffiliation",
-
-     // URL to redirect after successful single logout
-     //'simplesaml_logout_url' => "",
-
-    /*
-     * action plugin (action.php)
-     */
-
-     // When enabled, this will hide the normal login form and redirect directly to the IdP.
-     // If the authtype is set to plainsaml,  then the redirection will be always done
-     'force_saml_login' => false,
-
-     // path to button image
-     //'button_image_path' => "",
-
-     // hide local login form
-     //'hide_local_login' => true,
-);
+$conf['force_saml_login'] = false;
+$conf['button_image_path'] = 'lib/plugins/plainsaml/images/button.gif';
+$conf['hide_local_login'] = false;
