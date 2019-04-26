@@ -203,21 +203,9 @@ class saml_handler {
         $changes = array();
         $userData = $this->getSAMLUserData();
 
-        if ($auth->canDo('modName')) {
-            if(!empty($userData['name'])) {
-                $changes['name'] = $userData['name'];
-            }
-        }
-        if ($auth->canDo('modMail')) {
-            if(!empty($userData['mail'])) {
-                $changes['mail'] = $userData['mail'];
-            }
-        }
-        if ($auth->canDo('modGroups')) {
-            if(!empty($userData['grps'])) {
-                $changes['grps'] = $userData['grps'];
-            }
-        }
+        $changes['name'] = $userData['name'];
+        $changes['mail'] = $userData['mail'];
+        $changes['grps'] = $userData['grps'];
 
         if (!empty($changes)) {
             $this->modifyUser($username, $changes);
