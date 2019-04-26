@@ -1,7 +1,7 @@
 <?php
 
 /**
- * DokuWiki Plugin authsaml (Auth Component).
+ * DokuWiki Plugin plainsaml (Auth Component).
  *
  * @author  Dominik Volkamer <dominik.volkamer@fau.de> (RRZE), Oleg Britvin <oleg.britvin@fau.de> (RRZE)
  * @author  Sixto Martin <sixto.martin.garcia@gmail.com>
@@ -16,7 +16,7 @@
 // must be run within Dokuwiki
 if(!defined('DOKU_INC')) die();
 
-class auth_plugin_authsaml extends auth_plugin_authplain {
+class auth_plugin_plainsaml extends auth_plugin_authplain {
     /**
      * simplesamlphp auth instance
      *

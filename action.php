@@ -1,7 +1,7 @@
 <?php
 
 /**
- * DokuWiki Plugin authsaml (Action Component)
+ * DokuWiki Plugin plainsaml (Action Component)
  *
  * Can intercepts the 'login' action and redirects the user to the IdP
  * instead of showing the login form.
@@ -20,7 +20,7 @@
 // must be run within Dokuwiki
 if(!defined('DOKU_INC')) die();
 
-class action_plugin_authsaml extends DokuWiki_Action_Plugin {
+class action_plugin_plainsaml extends DokuWiki_Action_Plugin {
 
     protected $saml;
 
@@ -31,7 +31,7 @@ class action_plugin_authsaml extends DokuWiki_Action_Plugin {
     public function register(Doku_Event_Handler $controller) {
         global $conf;
 
-        if($conf['authtype'] != 'authsaml') return;
+        if($conf['authtype'] != 'plainsaml') return;
 
         require_once('saml.php');
         $this->loadConfig();
@@ -94,7 +94,7 @@ class action_plugin_authsaml extends DokuWiki_Action_Plugin {
         }
 
         // use custom path for button image (or fall back to default)
-        $button_image_path = 'lib/plugins/authsaml/images/button.gif';
+        $button_image_path = 'lib/plugins/plainsaml/images/button.gif';
         if (!empty($this->getConf('button_image_path')) && is_file($this->getConf('button_image_path'))) {
             $button_image_path = $this->getConf('button_image_path');
         }

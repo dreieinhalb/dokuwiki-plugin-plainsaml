@@ -1,6 +1,6 @@
 <?php
 /**
- * Default settings for the authshibboleth plugin.
+ * Default settings for the plainsaml plugin.
  *
  * @author  Sixto Martin <sixto.martin.garcia@gmail.com>
  * @author  Andreas Aakre Solberg, UNINETT, http://www.uninett.no
@@ -48,7 +48,7 @@ $conf = array(
      */
 
      // When enabled, this will hide the normal login form and redirect directly to the IdP.
-     // If the authtype is set to authsaml,  then the redirection will be always done
+     // If the authtype is set to plainsaml,  then the redirection will be always done
      'force_saml_login' => false,
 
      // path to button image

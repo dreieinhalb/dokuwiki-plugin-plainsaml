@@ -1,7 +1,7 @@
 <?php
 
 /**
- * DokuWiki Plugin authsaml (SAML class)
+ * DokuWiki Plugin plainsaml (SAML class)
  *
  * @author  Dominik Volkamer <dominik.volkamer@fau.de> (RRZE), Oleg Britvin <oleg.britvin@fau.de> (RRZE)
  * @author  Sixto Martin <sixto.martin.garcia@gmail.com>
@@ -51,9 +51,9 @@ class saml_handler {
         $this->simplesaml_grps = $plugin_conf['simplesaml_grps'];
         $this->simplesaml_logout_url = $plugin_conf['simplesaml_logout_url'];
 
-        $auth_saml_active = isset($conf['authtype']) && $conf['authtype'] == 'authsaml';
+        $auth_saml_active = isset($conf['authtype']) && $conf['authtype'] == 'plainsaml';
 
-        // Force redirection to the IdP if we chose authsaml as authtype or if we configured as true the 'force_saml_login'
+        // Force redirection to the IdP if we chose plainsaml as authtype or if we configured as true the 'force_saml_login'
         $force_saml_login = $auth_saml_active || $plugin_conf['force_saml_login'];
 
         # Use DOKU_CONF analogue to authplain plugin
