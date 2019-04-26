@@ -53,4 +53,7 @@ $conf = array(
 
      // path to button image
      //'button_image_path' => "",
+
+     // hide local login form
+     //'hide_local_login' => true,
 );

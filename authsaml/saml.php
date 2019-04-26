@@ -3,6 +3,7 @@
 /**
  * DokuWiki Plugin authsaml (SAML class)
  *
+ * @author  Dominik Volkamer <dominik.volkamer@fau.de> (RRZE), Oleg Britvin <oleg.britvin@fau.de> (RRZE)
  * @author  Sixto Martin <sixto.martin.garcia@gmail.com>
  * @author  Andreas Aakre Solberg, UNINETT, http://www.uninett.no
  * @author  François Kooman
@@ -65,9 +66,18 @@ class saml_handler {
     public function get_ssp_instance() {
         if ($this->ssp == null) {
             include_once($this->simplesaml_path.'/lib/_autoload.php');
-            $this->ssp = new SimpleSAML_Auth_Simple($this->simplesaml_authsource);
+            $this->ssp = new SimpleSAML\Auth\Simple($this->simplesaml_authsource);
         }
         return $this->ssp;
+    }
+
+    /**
+     *  session cleanup according to SimpleSAMLphp documentation (restore previous session)
+     */
+    public function session_cleanup() {
+        include_once($this->simplesaml_path.'/lib/_autoload.php');
+        $session = SimpleSAML\Session::getSessionFromRequest();
+        $session->cleanup();
     }
 
     public function slo() {
@@ -171,6 +181,7 @@ class saml_handler {
             $_SESSION[DOKU_COOKIE]['auth']['buid'] = auth_browseruid();
             $_SESSION[DOKU_COOKIE]['auth']['info'] = $USERINFO;
             $_SESSION[DOKU_COOKIE]['auth']['time'] = time();
+            $_SESSION[DOKU_COOKIE]['auth']['saml'] = true;
         }
     }
 
