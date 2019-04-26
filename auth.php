@@ -113,8 +113,13 @@ class auth_plugin_plainsaml extends auth_plugin_authplain {
             }
         } else {
             $this->saml->debug_saml("Called function 'logOff()'", __LINE__, __FILE__);
+            $ssp = $this->saml->get_ssp_instance();
+
             if ($this->saml->ssp->isAuthenticated()) {
                 $this->saml->slo();
+            } else {
+                // session cleanup according to SimpleSAMLphp documentation if user is not authenticated
+                $this->saml->session_cleanup();
             }
         }
     }
