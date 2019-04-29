@@ -5,6 +5,15 @@
 This plugin provides an external authentication via SimpleSAMLphp Service Provider instance or local login with authplain plugin.
 
 
+## Author ##
+
+Dominik Volkamer <dominik.volkamer@fau.de> (RRZE)
+
+with the help of:
+
+Oleg Britvin <oleg.britvin@fau.de> (RRZE)
+
+
 ## Origins ##
 
 This plugin is a fork of [authsaml plugin](https://www.dokuwiki.org/plugin:authsaml) by Sixto Martin <sixto.martin.garcia@gmail.com>, which is also based on the work of several other authors:
@@ -23,7 +32,7 @@ This plugin is tested again:
 - [DokuWiki](https://www.dokuwiki.org) Greebo (2018-04-22b)
 - [SimpleSAMLphp](https://simplesamlphp.org) v1.17.2
 
-(using it with older version of DokuWiki or SimpleSAMLphp may do not work)
+(using it with older version of DokuWiki or SimpleSAMLphp may does not work)
 
 
 ## License ##
