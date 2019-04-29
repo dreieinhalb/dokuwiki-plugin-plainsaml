@@ -11,7 +11,9 @@ Dominik Volkamer <dominik.volkamer@fau.de> ([RRZE](https://www.rrze.fau.de/))
 
 with the help of:
 
-Oleg Britvin <oleg.britvin@fau.de> ([RRZE](https://www.rrze.fau.de/))
+- Oleg Britvin <oleg.britvin@fau.de> ([RRZE](https://www.rrze.fau.de/))
+- Stefan Roas <stefan.roas@fau.de> ([RRZE](https://www.rrze.fau.de/))
+- Peter Reiß <peter.reiss@fau.de> ([RRZE](https://www.rrze.fau.de/))
 
 
 ## Origins ##
