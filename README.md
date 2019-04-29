@@ -7,11 +7,11 @@ This plugin provides an external authentication via SimpleSAMLphp Service Provid
 
 ## Author ##
 
-Dominik Volkamer <dominik.volkamer@fau.de> (RRZE)
+Dominik Volkamer <dominik.volkamer@fau.de> ([RRZE](https://www.rrze.fau.de/))
 
 with the help of:
 
-Oleg Britvin <oleg.britvin@fau.de> (RRZE)
+Oleg Britvin <oleg.britvin@fau.de> ([RRZE](https://www.rrze.fau.de/))
 
 
 ## Origins ##
