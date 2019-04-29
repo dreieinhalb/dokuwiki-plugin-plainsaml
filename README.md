@@ -1,4 +1,4 @@
-# SAML Auth Plugin (using SimpleSAMLphp) extending authplain for DokuWiki (plainsaml) #
+# SAML Auth Plugin extending Plain Auth Plugin for DokuWiki #
 
 ## Description ##
 
@@ -29,8 +29,8 @@ This plugin is a fork of [authsaml plugin](https://www.dokuwiki.org/plugin:auths
 
 This plugin is tested again:
 
-- [DokuWiki](https://www.dokuwiki.org) Greebo (2018-04-22b)
-- [SimpleSAMLphp](https://simplesamlphp.org) v1.17.2
+- [DokuWiki](https://www.dokuwiki.org) `Greebo (2018-04-22b)`
+- [SimpleSAMLphp](https://simplesamlphp.org) `v1.17.2`
 
 (using it with older version of DokuWiki or SimpleSAMLphp may does not work)
 
@@ -50,5 +50,5 @@ Please use the detailed and well described [installation and configuration instr
 ### plainsaml ###
 
 1. Download this plugin for example with the help of the extension manager of DokuWiki ([URL](https://github.com/dreieinhalb/dokuwiki-plugin-plainsaml/zipball/master)).
-2. Set configuration options for plainsaml with config manager of DokuWiki (options are descriped there).
+2. Set configuration options for plainsaml with configuration manager of DokuWiki (options are descriped there).
 3. Change DokuWiki's config option `authtype` to `plainsaml`.
