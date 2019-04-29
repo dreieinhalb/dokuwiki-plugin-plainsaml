@@ -55,7 +55,7 @@ class auth_plugin_plainsaml extends auth_plugin_authplain {
      * @see DokuWiki_Auth_Plugin::trustExternal()
      */
     public function trustExternal($user, $pass, $sticky = false) {
-        global $INPUT;
+        global $INPUT, $USERINFO;
 
         $this->saml->debug_saml("Called function 'trustExternal($user,[...])'", __LINE__, __FILE__);
 
@@ -79,6 +79,18 @@ class auth_plugin_plainsaml extends auth_plugin_authplain {
             return auth_login($user, $pass, $sticky);
         } else {
             $this->saml->debug_saml("using saml", __LINE__, __FILE__);
+
+            // check session for existing valid saml session
+            if(isset($saml_session)) {
+                if(($session['time'] >= time() - $conf['auth_security_timeout']) &&
+                    ($session['buid'] == auth_browseruid())
+                ) {
+                    $_SERVER['REMOTE_USER'] = $session['user'];
+                    $USERINFO               = $session['info'];
+                    return true;
+                }
+            }
+
             $ssp = $this->saml->get_ssp_instance();
 
             if ($ssp->isAuthenticated()) {
