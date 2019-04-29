@@ -16,5 +16,5 @@ $meta['simplesaml_grps'] = array('string');
 $meta['simplesaml_logout_url'] = array('string');
 
 $meta['force_saml_login'] = array('onoff');
-$meta['button_image_path'] = array('string');
+$meta['button_image_url'] = array('string');
 $meta['hide_local_login'] = array('onoff');

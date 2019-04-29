@@ -22,5 +22,5 @@ $lang['simplesaml_grps'] = 'SAML identify field mapping: It is the SAML attribut
 $lang['simplesaml_logout_url'] = 'URL to redirect after successful single logout (SLO)';
 
 $lang['force_saml_login'] = 'Redirect directly to the IdP (when action is \'login\' or \'denied\').';
-$lang['button_image_path'] = 'Path to button image for SAML login';
+$lang['button_image_url'] = 'URL to custom button image for SAML login (can be uploaded with media manager)';
 $lang['hide_local_login'] = 'Hide local login form, for example if you want to use authplain only for remoteuser';

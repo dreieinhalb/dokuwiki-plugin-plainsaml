@@ -94,14 +94,14 @@ class action_plugin_plainsaml extends DokuWiki_Action_Plugin {
         }
 
         // use custom path for button image (or fall back to default)
-        $button_image_path = 'lib/plugins/plainsaml/images/button.gif';
-        if (!empty($this->getConf('button_image_path')) && is_file($this->getConf('button_image_path'))) {
-            $button_image_path = $this->getConf('button_image_path');
+        $button_image = DOKU_PLUGIN.'plainsaml/img/button.gif';
+        if (!empty($this->getConf('button_image_url'))) {
+            $button_image = $this->getConf('button_image_url');
         }
 
         // add button for SAML login to login page
         $fieldset  = '<fieldset height="400px" style="margin-bottom:20px;"><legend padding-top:-5px">'.$this->getLang('saml_connect').'</legend>';
-        $fieldset .= '<center><a href="'.$this->saml->ssp->getLoginURL().'"><img src="'.$button_image_path.'" alt="'.$this->getLang('saml_connect').'"></a><br>';
+        $fieldset .= '<center><a href="'.$this->saml->ssp->getLoginURL().'"><img src="'.$button_image.'" alt="'.$this->getLang('saml_connect').'"></a><br>';
         $fieldset .= $this->getLang('login_link').'</center></fieldset>';
         $pos = $event->data->findElementByAttribute('type', 'submit');
         $event->data->insertElement($pos-4, $fieldset);
