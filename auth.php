@@ -80,29 +80,35 @@ class auth_plugin_plainsaml extends auth_plugin_authplain {
         } else {
             $this->saml->debug_saml("using saml", __LINE__, __FILE__);
 
-            // check session for existing valid saml session
-            if(isset($saml_session)) {
-                if(($session['time'] >= time() - $conf['auth_security_timeout']) &&
-                    ($session['buid'] == auth_browseruid())
-                ) {
-                    $_SERVER['REMOTE_USER'] = $session['user'];
-                    $USERINFO               = $session['info'];
-                    return true;
-                }
-            }
-
             $ssp = $this->saml->get_ssp_instance();
 
             if ($ssp->isAuthenticated()) {
+
+                $session = $_SESSION[DOKU_COOKIE]['auth'];
+
+                // check session for existing valid saml session
+                if(isset($session['saml'])) {
+                    if(($session['time'] >= time() - $conf['auth_security_timeout']) &&
+                        ($session['buid'] == auth_browseruid())
+                    ) {
+                        $_SERVER['REMOTE_USER'] = $session['user'];
+                        $USERINFO               = $session['info'];
+                        $this->saml->debug_saml("Existing valid saml session found!", __LINE__, __FILE__);
+                        return true;
+                    }
+                }
+
                 $username = $this->saml->getUsername();
 
                 if($this->saml->getUserData($username)) {
                     $this->saml->update_user($username);
                     $this->saml->login($username);
+                    $this->saml->debug_saml("Login existing user '$username'!", __LINE__, __FILE__);
                     return true;
                 } else {
                     if($this->saml->register_user($username)) {
                         $this->saml->login($username);
+                        $this->saml->debug_saml("Login new registered user '$username'!", __LINE__, __FILE__);
                         return true;
                     }
                 }
