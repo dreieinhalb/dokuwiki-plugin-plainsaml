@@ -58,6 +58,15 @@ class saml_handler {
 
         # Use DOKU_CONF analogue to authplain plugin
         $this->saml_user_file = DOKU_CONF.'users.saml.php';
+
+        # initial creation of saml user file from dist file
+        if(!@file_exists($this->saml_user_file)) {
+            $output = @file_get_contents(DOKU_PLUGIN.'plainsaml/conf/users.saml.php.dist');
+            if (!io_saveFile($this->saml_user_file, $output, false)) {
+                msg('Error creating saml user file', -1);
+                return false;
+            }
+        }
     }
 
     /**

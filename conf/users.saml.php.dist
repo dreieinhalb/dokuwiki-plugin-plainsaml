@@ -1,0 +1,10 @@
+# users.saml.php
+# <?php exit()?>
+# Don't modify the lines above
+#
+# Userfile for plainsaml plugin
+#
+# Format:
+#
+# login:passwordhash:Real Name:email:groups,comma,separated
+
