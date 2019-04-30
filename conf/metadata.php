@@ -5,7 +5,7 @@
  * @author Dominik Volkamer <dominik.volkamer@fau.de> (RRZE)
  */
 
-$meta['debug'] = array('multicheckbox', '_choices' => array('0','1','2','3'));
+$meta['debug'] = array('multichoice', '_choices' => array(0, 1, 2, 3));
 
 $meta['simplesaml_path'] = array('string');
 $meta['simplesaml_authsource'] = array('string');

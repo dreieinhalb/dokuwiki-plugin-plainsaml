@@ -76,7 +76,6 @@ class saml_handler {
     public function get_ssp_instance() {
         if ($this->ssp == null) {
             include_once($this->simplesaml_path.'/lib/_autoload.php');
-            $this->debug_saml("Getting new SimpleSAMLphp instance.", 3, __LINE__, __FILE__);
             $this->ssp = new SimpleSAML\Auth\Simple($this->simplesaml_authsource);
         }
         return $this->ssp;
@@ -96,10 +95,10 @@ class saml_handler {
         if ($this->ssp->isAuthenticated()) {
             # redirect to logout URL after successful single logout
             if (empty($this->simplesaml_logout_url)) {
-                $this->debug_saml("Calling single logout of SimpleSAMLphp.", 1, __LINE__, __FILE__);
+                $this->debug_saml("Doing SAML SingleLogout.", 1, __LINE__, __FILE__);
                 $this->ssp->logout();
             } else {
-                $this->debug_saml("Calling single logout of SimpleSAMLphp with URL '$this->simplesaml_logout_url)'.", 1, __LINE__, __FILE__);
+                $this->debug_saml("Doing SAML SingleLogout with URL '$this->simplesaml_logout_url'.", 1, __LINE__, __FILE__);
                 $this->ssp->logout($this->simplesaml_logout_url);
             }
         }
@@ -168,9 +167,8 @@ class saml_handler {
         $ssp = $this->get_ssp_instance();
         $this->attributes = $ssp->getAttributes();
 
-
         if ($ssp->isAuthenticated() && !empty($this->attributes)) {
-            $this->debug_saml("Doing SAML login.", 1, __LINE__, __FILE__);
+            $this->debug_saml("Doing SAML login for user '$username'.", 1, __LINE__, __FILE__);
 
             $_SERVER['REMOTE_USER'] = $username;
 
@@ -180,7 +178,7 @@ class saml_handler {
             $USERINFO['mail'] = $userData['mail'];
             $USERINFO['grps'] = $userData['grps'];
 
-            $this->debug_saml_debug("SAML login: Set USERINFO variable: ", $USERINFO, 3, __LINE__, __FILE__);
+            $this->debug_saml_dump("SAML login: Set USERINFO variable: ", $USERINFO, 3, __LINE__, __FILE__);
 
             // set cookie
             $sticky = false;
@@ -199,7 +197,7 @@ class saml_handler {
             $_SESSION[DOKU_COOKIE]['auth']['time'] = time();
             $_SESSION[DOKU_COOKIE]['auth']['saml'] = true;
 
-            $this->debug_saml_debug("SAML login: Set _SESSION variable: ", $_SESSION, 3, __LINE__, __FILE__);
+            $this->debug_saml_dump("SAML login: Set _SESSION variable: ", $_SESSION, 3, __LINE__, __FILE__);
         }
     }
 
