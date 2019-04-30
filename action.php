@@ -70,7 +70,7 @@ class action_plugin_plainsaml extends DokuWiki_Action_Plugin {
 
         $this->saml->get_ssp_instance();
 
-        if ('login' == $ACT) {
+        if ($ACT == 'login') {
             $force_saml_login = $this->getConf('force_saml_login');
             if ($force_saml_login) {
                 $this->saml->ssp->requireAuth();
