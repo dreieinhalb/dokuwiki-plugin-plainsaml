@@ -132,6 +132,10 @@ class auth_plugin_plainsaml extends auth_plugin_authplain {
             $ssp = $this->saml->get_ssp_instance();
 
             if ($this->saml->ssp->isAuthenticated()) {
+                if(isset($_SESSION[DOKU_COOKIE]['auth'])) {
+                    unset($_SESSION[DOKU_COOKIE]['auth']);
+                }
+
                 $this->saml->slo();
             } else {
                 // session cleanup according to SimpleSAMLphp documentation if user is not authenticated
