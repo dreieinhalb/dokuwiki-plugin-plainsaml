@@ -197,7 +197,7 @@ class saml_handler {
             $_SESSION[DOKU_COOKIE]['auth']['time'] = time();
             $_SESSION[DOKU_COOKIE]['auth']['saml'] = true;
 
-            $this->debug_saml_dump("SAML login: Set _SESSION variable: ", $_SESSION, 3, __LINE__, __FILE__);
+            $this->debug_saml_dump("SAML login: Set _SESSION[DOKU_COOKIE]['auth'] variable: ", $_SESSION[DOKU_COOKIE]['auth'], 3, __LINE__, __FILE__);
         }
     }
 
