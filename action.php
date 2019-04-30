@@ -50,11 +50,12 @@ class action_plugin_plainsaml extends DokuWiki_Action_Plugin {
         global $ACT;
         global $INFO;
 
-        $this->saml->get_ssp_instance();
         $force_saml = $this->getConf('force_saml_login');
 
         if((($ACT == 'denied' && empty($USERINFO)) || $ACT == 'login') && $force_saml) {
             $this->saml->debug_saml("Forcing SAML login because 'force_saml_login' is true.", 3, __LINE__, __FILE__);
+
+            $this->saml->get_ssp_instance();
             $this->saml->ssp->requireAuth();
         }
     }
