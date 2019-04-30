@@ -38,43 +38,24 @@ class action_plugin_plainsaml extends DokuWiki_Action_Plugin {
         $this->saml = new saml_handler($this->conf);
 
         $controller->register_hook('HTML_LOGINFORM_OUTPUT', 'BEFORE', $this, 'handle_login_form');
-        $controller->register_hook('ACTION_ACT_PREPROCESS', 'BEFORE', $this, 'handle_login');
-        $controller->register_hook('AUTH_ACL_CHECK', 'AFTER', $this, 'handle_access_denied');
+        $controller->register_hook('ACTION_ACT_PREPROCESS', 'AFTER', $this, 'handle_action_after');
     }
 
     /**
-     * Instead of showing the login page when access is denied, redirect to the IdP if force_saml_login is 'true'
+     * Instead of showing the login page when action is 'login' or 'denied', redirect directly to the IdP if force_saml_login is 'true'
+     * (adapted parts from authplaincas by Erasmus Student Network @esn-org)
      */
 
-    function handle_access_denied(&$event, $param) {
+    function handle_action_after(&$event, $param) {
         global $ACT;
         global $INFO;
 
         $this->saml->get_ssp_instance();
+        $force_saml = $this->getConf('force_saml_login');
 
-        if ($ACT == 'denied') {
-            if ($this->getConf('force_saml_login')) {
-                $this->saml->debug_saml("Forcing SAML login because action is 'denied' and force_saml_login is true.", 3, __LINE__, __FILE__);
-                $this->saml->ssp->requireAuth();
-            }
-        }
-    }
-
-    /**
-     * Redirect Login Handler. Redirect to the IdP if force_saml_login is True
-     */
-
-    public function handle_login(&$event, $param) {
-        global $ACT, $auth;
-
-        $this->saml->get_ssp_instance();
-
-        if ($ACT == 'login') {
-            $force_saml_login = $this->getConf('force_saml_login');
-            if ($force_saml_login) {
-                $this->saml->debug_saml("Forcing SAML login because action is 'login' and force_saml_login is true.", 3, __LINE__, __FILE__);
-                $this->saml->ssp->requireAuth();
-            }
+        if((($ACT == 'denied' && empty($USERINFO)) || $ACT == 'login') && $force_saml) {
+            $this->saml->debug_saml("Forcing SAML login because 'force_saml_login' is true.", 3, __LINE__, __FILE__);
+            $this->saml->ssp->requireAuth();
         }
     }
 
