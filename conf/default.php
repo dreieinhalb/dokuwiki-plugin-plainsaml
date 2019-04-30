@@ -5,7 +5,7 @@
  * @author Dominik Volkamer <dominik.volkamer@fau.de> (RRZE)
  */
 
-$conf['debug'] = false;
+$conf['debug'] = '0';
 
 $conf['simplesaml_path'] = '';
 $conf['simplesaml_authsource'] = '';

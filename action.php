@@ -47,7 +47,6 @@ class action_plugin_plainsaml extends DokuWiki_Action_Plugin {
      */
 
     function handle_access_denied(&$event, $param) {
-        $this->saml->debug_saml("Called function 'handle_access_denied(&$event, $param)'", __LINE__, __FILE__);
         global $ACT;
         global $INFO;
 
@@ -55,6 +54,7 @@ class action_plugin_plainsaml extends DokuWiki_Action_Plugin {
 
         if ($ACT == 'denied') {
             if ($this->getConf('force_saml_login')) {
+                $this->saml->debug_saml("Forcing SAML login because action is 'denied' and force_saml_login is true.", 3, __LINE__, __FILE__);
                 $this->saml->ssp->requireAuth();
             }
         }
@@ -65,7 +65,6 @@ class action_plugin_plainsaml extends DokuWiki_Action_Plugin {
      */
 
     public function handle_login(&$event, $param) {
-        $this->saml->debug_saml("Called function 'handle_login($event, $param)'", __LINE__, __FILE__);
         global $ACT, $auth;
 
         $this->saml->get_ssp_instance();
@@ -73,6 +72,7 @@ class action_plugin_plainsaml extends DokuWiki_Action_Plugin {
         if ($ACT == 'login') {
             $force_saml_login = $this->getConf('force_saml_login');
             if ($force_saml_login) {
+                $this->saml->debug_saml("Forcing SAML login because action is 'login' and force_saml_login is true.", 3, __LINE__, __FILE__);
                 $this->saml->ssp->requireAuth();
             }
         }
@@ -83,19 +83,20 @@ class action_plugin_plainsaml extends DokuWiki_Action_Plugin {
      */
 
     function handle_login_form(&$event, $param) {
-        $this->saml->debug_saml("Called function 'handle_login_form(&$event, $param)'", __LINE__, __FILE__);
         global $auth, $conf;
 
         $this->saml->get_ssp_instance();
 
         // remove the local login form if config option is set
         if (!empty($this->getConf('hide_local_login')) && $this->getConf('hide_local_login') == true) {
+            $this->saml->debug_saml("Hiding local login form because config option is set.", 3, __LINE__, __FILE__);
             $event->data->_content = array();
         }
 
         // use custom path for button image (or fall back to default)
         $button_image = DOKU_PLUGIN.'plainsaml/img/button.gif';
         if (!empty($this->getConf('button_image_url'))) {
+            $this->saml->debug_saml("Using custom button image because config option is set.", 3, __LINE__, __FILE__);
             $button_image = $this->getConf('button_image_url');
         }
 

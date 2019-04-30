@@ -57,13 +57,13 @@ class auth_plugin_plainsaml extends auth_plugin_authplain {
     public function trustExternal($user, $pass, $sticky = false) {
         global $INPUT, $USERINFO;
 
-        $this->saml->debug_saml("Called function 'trustExternal($user,[...])'", __LINE__, __FILE__);
+        $this->debug_saml("Calling trustExternal with user '$user'.", 3, __LINE__, __FILE__);
 
         $session = $_SESSION[DOKU_COOKIE]['auth'];
         $saml_session = $_SESSION[DOKU_COOKIE]['auth']['saml'];
 
         if((!empty($user) && !empty($pass)) || (!empty($session) && empty($saml_session))) {
-            $this->saml->debug_saml("using authplain", __LINE__, __FILE__);
+            $this->debug_saml("Using authplain login in trustExternal function.", 1, __LINE__, __FILE__);
 
             $this->cando['addUser'] = true;
             $this->cando['delUser'] = true;
@@ -78,7 +78,7 @@ class auth_plugin_plainsaml extends auth_plugin_authplain {
 
             return auth_login($user, $pass, $sticky);
         } else {
-            $this->saml->debug_saml("using saml", __LINE__, __FILE__);
+            $this->debug_saml("Using saml login in trustExternal function.", 1, __LINE__, __FILE__);
 
             $ssp = $this->saml->get_ssp_instance();
 
@@ -93,7 +93,7 @@ class auth_plugin_plainsaml extends auth_plugin_authplain {
                     ) {
                         $_SERVER['REMOTE_USER'] = $session['user'];
                         $USERINFO               = $session['info'];
-                        $this->saml->debug_saml("Existing valid saml session found!", __LINE__, __FILE__);
+                        $this->saml->debug_saml("Existing valid saml session found!", 1, __LINE__, __FILE__);
                         return true;
                     }
                 }
@@ -103,12 +103,12 @@ class auth_plugin_plainsaml extends auth_plugin_authplain {
                 if($this->saml->getUserData($username)) {
                     $this->saml->update_user($username);
                     $this->saml->login($username);
-                    $this->saml->debug_saml("Login existing user '$username'!", __LINE__, __FILE__);
+                    $this->saml->debug_saml("Login existing user '$username'!", 3, __LINE__, __FILE__);
                     return true;
                 } else {
                     if($this->saml->register_user($username)) {
                         $this->saml->login($username);
-                        $this->saml->debug_saml("Login new registered user '$username'!", __LINE__, __FILE__);
+                        $this->saml->debug_saml("Login new registered user '$username'!", 3, __LINE__, __FILE__);
                         return true;
                     }
                 }
@@ -130,7 +130,6 @@ class auth_plugin_plainsaml extends auth_plugin_authplain {
                 unset($_SESSION[DOKU_COOKIE]['auth']);
             }
         } else {
-            $this->saml->debug_saml("Called function 'logOff()'", __LINE__, __FILE__);
             $ssp = $this->saml->get_ssp_instance();
 
             if ($this->saml->ssp->isAuthenticated()) {

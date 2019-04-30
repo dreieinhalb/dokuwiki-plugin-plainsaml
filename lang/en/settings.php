@@ -11,7 +11,7 @@
  * @license GPL2 http://www.gnu.org/licenses/gpl.html
  */
 
-$lang['debug'] = 'Enable for debugging output for plainsaml plugin';
+$lang['debug'] = 'Debug level for plainsaml plugin (from: 0 = no debug messages, to: 3 = all debug messages). Debug messages are written to the error log of PHP, which is typically the web server error log.';
 
 $lang['simplesaml_path'] = 'SimpleSAMLphp path: This refers to the path of the SimpleSAMLphp folder. For example: /var/www/simplesamlphp';
 $lang['simplesaml_authsource'] = 'SimpleSAMLphp SP source: Select the SP source you want to connect (Sources are at the SP of simpleSAMLphp in config/authsources.php).';
