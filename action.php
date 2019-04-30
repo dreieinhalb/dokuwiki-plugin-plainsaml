@@ -94,7 +94,7 @@ class action_plugin_plainsaml extends DokuWiki_Action_Plugin {
         }
 
         // use custom path for button image (or fall back to default)
-        $button_image = DOKU_PLUGIN.'plainsaml/img/button.gif';
+        $button_image = 'lib/plugins/plainsaml/img/button.gif';
         if (!empty($this->getConf('button_image_url'))) {
             $this->saml->debug_saml("Using custom button image because config option is set.", 3, __LINE__, __FILE__);
             $button_image = $this->getConf('button_image_url');
