@@ -55,7 +55,7 @@ class auth_plugin_plainsaml extends auth_plugin_authplain {
      * @see DokuWiki_Auth_Plugin::trustExternal()
      */
     public function trustExternal($user, $pass, $sticky = false) {
-        global $INPUT, $USERINFO;
+        global $INPUT, $USERINFO, $conf;
 
         $this->saml->debug_saml("Calling trustExternal with user '$user'.", 3, __LINE__, __FILE__);
 
