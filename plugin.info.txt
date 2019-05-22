@@ -1,7 +1,7 @@
 base plainsaml
 author Dominik Volkamer (RRZE)
 email dominik.volkamer@fau.de
-date 2019-04-29
+date 2019-05-22
 name SAML Auth Plugin extending Plain Auth Plugin
 desc Provides external authentication via SimpleSAMLphp Service Provider instance or local login with Plain Auth Plugin
 url https://github.com/dreieinhalb/dokuwiki-plugin-plainsaml
